@@ -8,14 +8,12 @@ import Components from '../algorithms/Components'
 class Graph {
     constructor(adjMatrix) {
         this.list = this.makeAdjacenyList(adjMatrix);
-        this.vertices = adjMatrix.length;
-
         this.matrix = adjMatrix;
     }
 
     makeAdjacenyList = (m) => {
         let list = [];
-        for(let v of m) {
+        for(let v = 0; v < m.length; ++v) {
             let current = [];
             for(let i = 0; i < m.length; ++i) {
                 if(m[v][i] == 1) {
