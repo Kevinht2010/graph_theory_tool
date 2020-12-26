@@ -1,4 +1,3 @@
-
 // returns an array of all the paths branching from one vertex
 function BFSRepeat(G, vertex) {
     let paths = [[vertex]];
@@ -92,15 +91,18 @@ function BFSNoRepeat(G, vertex, vertices) {
         let newVertices = [];
         for(let v of currentVertices) {
             for(let i = 0; i < list[v].length; ++i) {
-                if(vertexMap[list[v][i]] == 0)
-                    ++ vertexMap[list[v][i]];
+                if(vertexMap[list[v][i]] != 1) {
+                    ++vertexMap[list[v][i]];
+                    newVertices.push(list[v][i]);
+                }
             }
         }
-
-        currentVertices = newVertices;
+        
+        currentVertices = newVertices.slice(0);
     }
     
     return vertexMap;
 }
 
 export {BFSRepeat, BFSNoRepeat, BFSCycle};
+

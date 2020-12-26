@@ -38,7 +38,7 @@ class Components {
             finalComponents.push(current)
         }
         
-        return [count, finalComponents];
+        return [count, components];
     }
 
     getComponentCount = () => { return this.componentCount; }
