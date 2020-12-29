@@ -27,6 +27,14 @@ class Graph {
         return list;
     }
 
+    getCompleteSubgraph(vertices) {
+        
+    }
+
+    getSubgraph(vertices, adjacencyList) {
+
+    }
+
     getRequirement = (requirement) => {
         if(requirement == "components") {
             this.getComponents();

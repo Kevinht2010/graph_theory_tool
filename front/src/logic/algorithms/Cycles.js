@@ -1,24 +1,29 @@
 
 class Cycles {
     constructor(G) {
-        let c = this.getCycles;
+        let c = this.cycles();
         this.cycles = c;
-        this.minCycle = c[0];
-        this.maxCycle = c[1];
+        this.minCycle = this.minC();
+        this.maxCycle = this.maxC();
     }
 
-
-    minMaxCycle = (G) => {
-
-    }
-
-    getMinCycle() {
+    cycles = () => {
 
     }
 
-    getMaxCycle() {
+    maxC = () => {
+
+    }
+
+    minC = () => {
         
     }
+
+    getCycles = () => { return this.cycles; }
+
+    getMaxCycle = () => { return this.maxCycle; }
+
+    getMinCycle = () => { return this.minCycle }
 }
 
 export default Cycles

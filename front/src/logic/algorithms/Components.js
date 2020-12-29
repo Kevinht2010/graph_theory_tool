@@ -35,7 +35,7 @@ class Components {
                 }
             }
 
-            finalComponents.push(current)
+            finalComponents.push(current);
         }
         
         return [count, components];
