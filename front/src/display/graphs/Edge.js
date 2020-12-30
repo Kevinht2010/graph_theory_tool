@@ -6,12 +6,14 @@ function Edge(props) {
     const [bendPos, setBendPos] = useState(props.bendPos);
 
     let c;
+    let d;
     if(props.bendPos.bent === false) {
         c = [(node1.posX + node2.posX)/2, (node1.posY + node2.posY)/2];
+        d = "M " + node1.posX + " " + node1.posY + " Q " + c[0] + " " + c[1] + " " + node2.posX + " " + node2.posY;
     } else {
         c = [props.bendPos.posX, props.bendPos.posY];
+        d = calcCirclePath([[node2.posX, node2.posY], c, [node1.posX, node1.posY]]);
     }
-    let d = calcCirclePath([[node2.posX, node2.posY], c, [node1.posX, node1.posY]]);
 
     useEffect(() => {
         setNode1(props.node1); setNode2(props.node2);
@@ -21,7 +23,7 @@ function Edge(props) {
     return (
         <svg>
             <path d={d} stroke="black" fill="transparent" stroke-width="2"/>
-            <circle onMouseDown={(e) => {props.dragStart(e, props.id, false)}} onMouseUp={(e) => props.dragEnd(e)} cx={c[0]} cy={c[1]} r={4}/>
+            <circle onMouseDown={(e) => {props.dragStart(e, props.id, false)}} onMouseUp={(e) => props.dragEnd(e)} cx={c[0]} cy={c[1]} r={6}/>
         </svg>
     )
 }

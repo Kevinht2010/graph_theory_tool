@@ -4,10 +4,10 @@ import Edge from './Edge';
 
 export default function GraphVisual(props) {
     const [mouseIn, setMouseIn] = useState(false);
-    const [data, setData] = useState(props.data);
+    const [vertices, setVertices] = useState(props.vertices);
 
     const [edges, setEdges] = useState(props.edges);
-    const [bendPositions, setBendPositons] = useState([{"bent": false}]);
+    const [bendPositions, setBendPositons] = useState(props.bendPositions);
     const [dragNode, setDragNode] = useState();
     const [isDraggingNode, setIsDraggingNode] = useState(false);
     const [isDraggingEdge, setIsDraggingEdge] = useState(false);
@@ -23,14 +23,14 @@ export default function GraphVisual(props) {
             setOriginY(e.clientY);
             if(node) {
                 setIsDraggingNode(true);
-                setPrevPosition([data[id].posX, data[id].posY]);
+                setPrevPosition([vertices[id].posX, vertices[id].posY]);
             } else {
                 setIsDraggingEdge(true);
                 if(bendPositions[id].bent === true) {
                     setPrevPosition([bendPositions[id].posX, bendPositions[id].posY]);
                 } else {
-                    let node1 = data[edges[id].node1];
-                    let node2 = data[edges[id].node2];
+                    let node1 = vertices[edges[id].node1];
+                    let node2 = vertices[edges[id].node2];
                     setPrevPosition([(node1.posX + node2.posX) / 2, (node1.posY + node2.posY) / 2]);
                 }
             }
@@ -64,35 +64,35 @@ export default function GraphVisual(props) {
     }
 
     const updateData = (a) => {
-        console.log("update")
-        let newData = data.slice(0);
-        newData[a.id] = a;
-        setData(newData);
+        let newVertices = vertices.slice(0);
+        newVertices[a.id] = a;
+        props.setVertices(newVertices);
+        setVertices(newVertices);
     }
 
     const updateBendPositions = (a) => {
         let newBendPositions = [...bendPositions];
         newBendPositions[a.id] = a;
-        console.log(newBendPositions);
+        props.setBendPositions(newBendPositions);
         setBendPositons(newBendPositions);
     }
 
     const updatenodes = (a) => {
-        return data.map(node => {
+        return vertices.map(node => {
             return (<Node dragStart={dragStart} dragEnd={dragEnd} id={node.id} position={[node.posX, node.posY]}/>);
         })
     }
 
     const updateEdges = (a) => {
         return edges.map((edge, idx) => {
-            return (<Edge dragStart={dragStart} dragEnd={dragEnd} id={edge.id} node1={data[edge.node1]} node2={data[edge.node2]} bendPos={bendPositions[idx]}/>)
+            return (<Edge dragStart={dragStart} dragEnd={dragEnd} id={edge.id} node1={vertices[edge.node1]} node2={vertices[edge.node2]} bendPos={bendPositions[idx]}/>)
         })
     }
 
-    useEffect(() => {updatenodes()}, [data, mouseIn, bendPositions])
+    useEffect(() => {setBendPositons(props.bendPositions)}, [vertices, mouseIn, bendPositions, props.bendPositions])
 
     return (
-        <svg style={{height: '100vh', width: '100vw', backgroundColor: 'gray'}} 
+        <svg style={{height:"600vh", width:"600vw", backgroundColor: '#dbedff'}} 
             onMouseOver={() => {setMouseIn(true)}} onMouseLeave={(e) => {console.log("Out"); dragging(e); setMouseIn(false); dragEnd()}}
             onMouseMove={(e) => {dragging(e)}} onMouseUp={() => dragEnd()}>
             {updateEdges()}

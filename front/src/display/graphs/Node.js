@@ -11,8 +11,8 @@ export default function Node(props) {
     }, [props.position])
 
     return (
-        <g style={{userSelect:"none", zIndex:"-1", position:"relative"}} onMouseDown={e => props.dragStart(e, props.id, true)} onMouseUp={(e) => props.dragEnd(e)}>
-            <circle cx={labelX} cy={labelY} r="40" stroke="blue" fill="#03d3fc"/>
+        <g style={{userSelect:"none"}} onMouseDown={e => props.dragStart(e, props.id, true)} onMouseUp={(e) => props.dragEnd(e)}>
+            <circle cx={labelX} cy={labelY} r="40" stroke="#2ab863" stroke-width="4" fill="#ccffcf"/>
             <text pointerEvents={"none"} textAnchor="middle" transform={`translate(${labelX}, ${labelY + 5})`} fontSize="20">{props.id}</text>
         </g>
     )

@@ -1,10 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react'
 import Graph from './logic/graph/Graph'
 import GraphVisual from './display/graphs/GraphVisual'
 import { useEffect, useState } from 'react'
 import { BFSCycle, BFSNoRepeat, BFSRepeat } from './logic/algorithms/BFS'
 import Components from './logic/algorithms/Components'
+import Data from './display/data/Data.js';
+import 'antd/dist/antd.css';
 
 function App() {
   useEffect(() => {
@@ -20,27 +23,9 @@ function App() {
     
   })
   return (
-    <div className="App">
-      <GraphVisual data={[{
-        "id": 0,
-        "posX": 110,
-        "posY": 100
-      }, {
-        "id": 1,
-        "posX": 120,
-        "posY": 170
-      }, {
-        "id": 2,
-        "posX": 300,
-        "posY": 350
-      }]}
-      edges={[{
-        "id": 0,
-        "node1": 0,
-        "node2": 1,
-        "bendPosition": null
-      }]}/>
-    </div>
+    <React.Fragment>
+      <Data />
+    </React.Fragment>
   );
 }
 
