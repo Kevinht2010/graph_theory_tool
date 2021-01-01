@@ -96,6 +96,8 @@ export default function GraphVisual(props) {
     useEffect(() => {
         setBendPositons(props.bendPositions); 
         setEdges(props.edges);
+        console.log(props.bendPositions);
+        console.log(props.edges);
     }, [vertices, mouseIn, bendPositions, props.bendPositions, props.edges, props.bendPositions, props.vertices])
 
     return (

@@ -11,8 +11,8 @@ export default function Inputs(props) {
     const [addEdgeValidStatus1, setAddEdgeValidStatus1] = useState("none");
     const [addEdgeValidStatus2, setAddEdgeValidStatus2] = useState("none");
     const [graphOptions, setGraphOptions] = useState();
-    const [v1, setV1] = useState(null);
-    const [v2, setV2] = useState(null);
+    const [v1, setV1] = useState("");
+    const [v2, setV2] = useState("");
 
     const options1 = ["Components", "Hamiltonian Cycles"];
     const options2 = ["Spanning Trees", "Euler Tours"];
@@ -65,28 +65,26 @@ export default function Inputs(props) {
     }
 
     const canAddEdge = () => {
-        if(v1 !== null && v2 !== null) {
+        if(v1 !== "" && v2 !== "") {
             let success = props.addEdge(v1, v2);
-            console.log(success)
-            if(success[0] === "success") {
-                setAddEdge(false);
-            }
-
+            setAddEdgeValidStatus1(success[0]);
+            setAddEdgeValidStatus2(success[1]);
             return success;
         } else {
             let k = [];
-            if(v1 === null) {
+            if(v1 === "") {
                 k.push("error")
             } else {
                 k.push("none")
             }
 
-            if(v2 === null) {
+            if(v2 === "") {
                 k.push("error")
             } else {
                 k.push("none");
             }
-
+            setAddEdgeValidStatus1(k[0]);
+            setAddEdgeValidStatus2(k[1]);
             return k;
         }
     }
@@ -95,12 +93,10 @@ export default function Inputs(props) {
         const footer = (
             <React.Fragment>
                 <Button key="back" onClick={() => {setAddEdge(false)}}>
-                    Cancel
+                    Return
                 </Button>
                 <Button type="primary" onClick={() => {
-                        let v = canAddEdge();
-                        setAddEdgeValidStatus1(v[0]);
-                        setAddEdgeValidStatus2(v[1]);
+                        canAddEdge()
                     }
                 }>
                     Add Edge
@@ -114,6 +110,9 @@ export default function Inputs(props) {
                  <div style={{display:"flex", width:"100%", justifyContent:"center", marginTop:"10px", marginBottom:"-5px", marginLeft:"-10px"}}>
                     <Form
                         initialValues={{ remember: true }}
+                        onMouseDown={() => {setAddEdgeValidStatus1("none"); console.log("?")
+                        setAddEdgeValidStatus2("none")}}
+                        onPressEnter={(e) => {e.preventDefault(); canAddEdge()}}
                         >
                         <Form.Item
                             label="Vertex 1"
@@ -121,7 +120,7 @@ export default function Inputs(props) {
                             validateStatus={addEdgeValidStatus1}
                             help={addEdgeValidStatus1 === "error" ? "Invalid Input" : null}
                         >
-                            <Input onChange={(e) => setV1(e.target.value)} />
+                            <Input onPressEnter={(e) => {e.preventDefault(); canAddEdge()}} autoComplete="off" onChange={(e) => setV1(e.target.value)} />
                         </Form.Item>
 
                         <Form.Item
@@ -130,7 +129,7 @@ export default function Inputs(props) {
                             label="Vertex 2"
                             name="v2"
                         >
-                            <Input onChange={(e) => setV2(e.target.value)} />
+                            <Input onPressEnter={(e) => {e.preventDefault(); canAddEdge()}} autoComplete="off" onChange={(e) => setV2(e.target.value)} />
                         </Form.Item>
                     </Form>
                  </div>
