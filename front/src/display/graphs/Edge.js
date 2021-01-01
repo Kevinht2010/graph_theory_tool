@@ -22,8 +22,12 @@ function Edge(props) {
 
     return (
         <svg>
-            <path d={d} stroke="black" fill="transparent" stroke-width="2"/>
-            <circle onMouseDown={(e) => {props.dragStart(e, props.id, false)}} onMouseUp={(e) => props.dragEnd(e)} cx={c[0]} cy={c[1]} r={6}/>
+            <svg>
+                <circle onMouseDown={(e) => {props.dragStart(e, props.id, false);}} onMouseUp={(e) => props.dragEnd(e)} cx={c[0]} cy={c[1]} r={6}/>
+            </svg>
+            <svg>
+                <path pointer-events="none" d={d} stroke="black" fill="transparent" stroke-width="3" shape-rendering="geometricPrecision"/>
+            </svg>
         </svg>
     )
 }

@@ -8,9 +8,11 @@ export default function GraphVisual(props) {
 
     const [edges, setEdges] = useState(props.edges);
     const [bendPositions, setBendPositons] = useState(props.bendPositions);
-    const [dragNode, setDragNode] = useState();
+    const [dragId, setDragId] = useState();
     const [isDraggingNode, setIsDraggingNode] = useState(false);
     const [isDraggingEdge, setIsDraggingEdge] = useState(false);
+    const [isCreatingEdge, setIsCreatingEdge] = useState(0);
+    const [neighbor1, setNeighbor1] = useState();
 
     const [originX, setOriginX] = useState(0);
     const [originY, setOriginY] = useState(0);
@@ -18,19 +20,20 @@ export default function GraphVisual(props) {
 
     const dragStart = (e, id, node) => {
         if(mouseIn === true) {
-            setDragNode(id);
+            setDragId(id);
             setOriginX(e.clientX);
             setOriginY(e.clientY);
+
             if(node) {
                 setIsDraggingNode(true);
                 setPrevPosition([vertices[id].posX, vertices[id].posY]);
             } else {
                 setIsDraggingEdge(true);
-                if(bendPositions[id].bent === true) {
-                    setPrevPosition([bendPositions[id].posX, bendPositions[id].posY]);
-                } else {
-                    let node1 = vertices[edges[id].node1];
-                    let node2 = vertices[edges[id].node2];
+                if(bendPositions.get(id).bent === true) {
+                    setPrevPosition([bendPositions.get(id).posX, bendPositions.get(id).posY]);
+                } else {  
+                    let node1 = vertices[edges.get(id).node1];
+                    let node2 = vertices[edges.get(id).node2];
                     setPrevPosition([(node1.posX + node2.posX) / 2, (node1.posY + node2.posY) / 2]);
                 }
             }
@@ -42,7 +45,7 @@ export default function GraphVisual(props) {
             let newX = e.clientX - originX;
             let newY =  e.clientY - originY;
             updateData({
-                "id": dragNode, 
+                "id": dragId, 
                 "posX": prevPosition[0] + newX, 
                 "posY": prevPosition[1] + newY
             });
@@ -50,7 +53,7 @@ export default function GraphVisual(props) {
             let newX = e.clientX - originX;
             let newY =  e.clientY - originY;
             updateBendPositions({
-                "id": dragNode, 
+                "id": dragId, 
                 "posX": prevPosition[0] + newX, 
                 "posY": prevPosition[1] + newY,
                 "bent": true
@@ -71,8 +74,7 @@ export default function GraphVisual(props) {
     }
 
     const updateBendPositions = (a) => {
-        let newBendPositions = [...bendPositions];
-        newBendPositions[a.id] = a;
+        let newBendPositions = new Map(bendPositions.set(a.id, a));
         props.setBendPositions(newBendPositions);
         setBendPositons(newBendPositions);
     }
@@ -84,12 +86,17 @@ export default function GraphVisual(props) {
     }
 
     const updateEdges = (a) => {
-        return edges.map((edge, idx) => {
-            return (<Edge dragStart={dragStart} dragEnd={dragEnd} id={edge.id} node1={vertices[edge.node1]} node2={vertices[edge.node2]} bendPos={bendPositions[idx]}/>)
+        let e = [];
+        edges.forEach((edge) => {
+            e.push(<Edge dragStart={dragStart} dragEnd={dragEnd} id={edge.id} node1={vertices[edge.node1]} node2={vertices[edge.node2]} bendPos={bendPositions.get(edge.id)}/>)
         })
+        return e;
     }
 
-    useEffect(() => {setBendPositons(props.bendPositions)}, [vertices, mouseIn, bendPositions, props.bendPositions])
+    useEffect(() => {
+        setBendPositons(props.bendPositions); 
+        setEdges(props.edges);
+    }, [vertices, mouseIn, bendPositions, props.bendPositions, props.edges, props.bendPositions, props.vertices])
 
     return (
         <svg style={{height:"600vh", width:"600vw", backgroundColor: '#dbedff'}} 

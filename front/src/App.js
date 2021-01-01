@@ -14,9 +14,7 @@ function App() {
     let adj = [[0,1,0,1], [1,0,1,1], [0,1,0,1], [1,1,1,0]];
     let graph = new Graph(adj);
     let vertices = BFSCycle(graph, 0);
-    for(let v = 0; v < vertices.length; ++ v) {
-      console.log("path: " + vertices[v]);
-    }
+
     let k = new Components(graph);
     console.log(k.getComponents());
     console.log(k.getComponentCount());
