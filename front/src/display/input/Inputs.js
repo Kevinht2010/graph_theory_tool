@@ -7,6 +7,7 @@ export default function Inputs(props) {
     const [showInput, setShowInput] = useState(false);
     const [properties, setProperties] = useState([{"id": "cycles", "value": "5"}]);
     const [prevProperties, setPrevProperties] = useState([]);
+    const [editEdge, setEditEdge] = useState(false);
     const [addEdge, setAddEdge] = useState(false);
     const [deleteEdge, setDeleteEdge] = useState(false);
     const [addEdgeValidStatus1, setAddEdgeValidStatus1] = useState("none");
@@ -65,9 +66,14 @@ export default function Inputs(props) {
         )
     }
 
-    const canAddEdge = () => {
+    const addOrDeleteEdge = (bool) => {
         if(v1 !== "" && v2 !== "") {
-            let success = props.addEdge(v1, v2);
+            let success;
+            if(bool) {
+                success = props.addEdge(v1, v2);
+            } else {
+                success = props.deleteEdge(v1, v2);
+            }
             setAddEdgeValidStatus1(success[0]);
             setAddEdgeValidStatus2(success[1]);
             return success;
@@ -90,30 +96,29 @@ export default function Inputs(props) {
         }
     }
 
-    const getAddEdge = () => {
+    const getEditEdge = () => {
         const footer = (
             <React.Fragment>
-                <Button key="back" onClick={() => {setAddEdge(false)}}>
+                <Button key="back" onClick={() => {setEditEdge(false); setAddEdge(false); setDeleteEdge(false)}}>
                     Return
                 </Button>
                 <Button type="primary" onClick={() => {
-                        canAddEdge()
+                        addEdge ? addOrDeleteEdge(true) : addOrDeleteEdge(false)
                     }
                 }>
-                    Add Edge
+                    {addEdge ? "Add Edge" : "Delete Edge"}
                 </Button>
             </React.Fragment>
         )
 
         return (
-            <Modal style={{top: "25%"}} title="Add Edge" visible={addEdge} onCancel={() => {setAddEdge(false); 
+            <Modal style={{top: "25%"}} title={addEdge ? "Add Edge" : "Delete Edge"} visible={editEdge} onCancel={() => {setEditEdge(false); setAddEdge(false); setDeleteEdge(false);
                     setAddEdgeValidStatus1("none"); setAddEdgeValidStatus2("none")}} footer={footer}>
                  <div style={{display:"flex", width:"100%", justifyContent:"center", marginTop:"10px", marginBottom:"-5px", marginLeft:"-10px"}}>
                     <Form
                         initialValues={{ remember: true }}
                         onMouseDown={() => {setAddEdgeValidStatus1("none"); console.log("?")
                         setAddEdgeValidStatus2("none")}}
-                        onPressEnter={(e) => {e.preventDefault(); canAddEdge()}}
                         >
                         <Form.Item
                             label="Vertex 1"
@@ -121,16 +126,15 @@ export default function Inputs(props) {
                             validateStatus={addEdgeValidStatus1}
                             help={addEdgeValidStatus1 === "error" ? "Invalid Input" : null}
                         >
-                            <Input onPressEnter={(e) => {e.preventDefault(); canAddEdge()}} autoComplete="off" onChange={(e) => setV1(e.target.value)} />
+                            <Input onPressEnter={(e) => {addEdge ? addOrDeleteEdge(true) : addOrDeleteEdge(false)}} autoComplete="off" onChange={(e) => setV1(e.target.value)} />
                         </Form.Item>
-
                         <Form.Item
                             validateStatus={addEdgeValidStatus2}
                             help={addEdgeValidStatus2 === "error" ? "Invalid Input" : null}
                             label="Vertex 2"
                             name="v2"
                         >
-                            <Input onPressEnter={(e) => {e.preventDefault(); canAddEdge()}} autoComplete="off" onChange={(e) => setV2(e.target.value)} />
+                            <Input onPressEnter={(e) => {addEdge ? addOrDeleteEdge(true) : addOrDeleteEdge(false)}} autoComplete="off" onChange={(e) => setV2(e.target.value)} />
                         </Form.Item>
                     </Form>
                  </div>
@@ -151,10 +155,10 @@ export default function Inputs(props) {
                 <p>Some contents...</p>
             </Modal>
             {getProperties()}
-            {getAddEdge()}
+            {getEditEdge()}
             <div style={{position:"absolute", display:"flex", right:"3%", bottom:"15%", flexWrap:"wrap", width:"125px"}}>
                 <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
-                        onClick={() => {setDeleteEdge(true)}}>
+                        onClick={() => {setDeleteEdge(true); setEditEdge(true);}}>
                     Delete Edge
                 </Button>
                 <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
@@ -162,7 +166,7 @@ export default function Inputs(props) {
                     Delete Node
                 </Button>
                 <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
-                    onClick={() => {setAddEdge(true)}}>
+                    onClick={() => {setAddEdge(true); setEditEdge(true)}}>
                     Add Edge
                 </Button>
                 <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 

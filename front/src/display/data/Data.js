@@ -165,9 +165,9 @@ export default function Data() {
 
     const deleteEdge = (key) => {
         let k = new Map(edges);
-        delete k[key];
+        k.delete(key);
         let b = new Map(bendPositions);
-        delete b[key];
+        b.delete(key);
         setEdges(k);
         setBendPositions(b);
     }
@@ -241,6 +241,7 @@ export default function Data() {
         } else {
             key = v1 + "." + v2;
         }
+        console.log(key);
         if(!edges.has(key)) {
             return ["error", "error"]
         } else {
@@ -255,7 +256,7 @@ export default function Data() {
         <div style={{overflow:"auto"}}>
             <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
                 onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
-                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex}/>
+                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}/>
                 <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
                             setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/>
             </div>
