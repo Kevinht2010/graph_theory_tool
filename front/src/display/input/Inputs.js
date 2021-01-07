@@ -8,6 +8,7 @@ export default function Inputs(props) {
     const [properties, setProperties] = useState([{"id": "cycles", "value": "5"}]);
     const [prevProperties, setPrevProperties] = useState([]);
     const [addEdge, setAddEdge] = useState(false);
+    const [deleteEdge, setDeleteEdge] = useState(false);
     const [addEdgeValidStatus1, setAddEdgeValidStatus1] = useState("none");
     const [addEdgeValidStatus2, setAddEdgeValidStatus2] = useState("none");
     const [graphOptions, setGraphOptions] = useState();
@@ -151,9 +152,23 @@ export default function Inputs(props) {
             </Modal>
             {getProperties()}
             {getAddEdge()}
-            <div style={{position:"absolute", display:"flex", right:"3%", bottom:"7%", flexWrap:"wrap", width:"125px"}}>
-                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" onClick={() => {setAddEdge(true)}}>Add Edge</Button>
-                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" onClick={() => {props.setAddingVertex(true)}}>Add Node</Button>
+            <div style={{position:"absolute", display:"flex", right:"3%", bottom:"15%", flexWrap:"wrap", width:"125px"}}>
+                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                        onClick={() => {setDeleteEdge(true)}}>
+                    Delete Edge
+                </Button>
+                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                        onClick={() => {props.setDeletingVertex(true)}}>
+                    Delete Node
+                </Button>
+                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                    onClick={() => {setAddEdge(true)}}>
+                    Add Edge
+                </Button>
+                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                    onClick={() => {props.setAddingVertex(true)}}>
+                    Add Node
+                </Button>
             </div>
         </React.Fragment>
     )

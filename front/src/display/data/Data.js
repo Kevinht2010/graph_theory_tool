@@ -101,6 +101,7 @@ export default function Data() {
 
     const [edges, setEdges] = useState(edgesMap);
     const [addingVertex, setAddingVertex] = useState(false);
+    const [deletingVertex, setDeletingVertex] = useState(false);
     const [bendPositions, setBendPositions] = useState(bdMap);
 
     const tryAddVertex = (e) => {
@@ -122,28 +123,72 @@ export default function Data() {
         setBendPositions(bdMap);
     }
 
+    const deleteVertex = (idx) => {
+        let newEdges = new Map();
+        let newBendPositions = new Map();
+        edges.forEach((v) => {
+            let key = v.id;
+            let substr1 = Number(key.substr(0, key.indexOf('.')));
+            let substr2 = Number(key.substr(key.indexOf('.') + 1, key.length - 1));
+
+            if(substr1 !== idx && substr2 !== idx) {
+                if(substr1> idx) --substr1;
+                if(substr2 > idx) --substr2;
+
+                let newKey = substr1 + "." + substr2;
+                let newVal = v;
+                newVal["id"] = newKey;
+                newVal["node1"] = substr1;
+                newVal["node2"] = substr2;
+                let newBendVal = bendPositions.get(key);
+                newBendVal["id"] = newKey;
+
+                newEdges.set(substr1 + "." + substr2, newVal);
+                newBendPositions.set(substr1 + "." + substr2, newBendVal);
+            }
+        })
+        console.log(newBendPositions)
+        setEdges(newEdges);
+        setBendPositions(newBendPositions);
+        setDeletingVertex(false);
+        deleteVertexHelper(idx)
+    }
+
+    const deleteVertexHelper = (idx) => {
+        let k = vertices;
+        k.splice(idx, 1);
+        for(let i = idx; i < k.length; ++i) {
+            --k[i].id;
+        }
+        setVertices(k);
+    }
+
+    const deleteEdge = (key) => {
+        let k = new Map(edges);
+        delete k[key];
+        let b = new Map(bendPositions);
+        delete b[key];
+        setEdges(k);
+        setBendPositions(b);
+    }
+
     const addEdge = (v1, v2) => {
         let valid = ["none", "none"];
         v1 = Number(v1);
         v2 = Number(v2);
-
         if(!(Number.isInteger(v1)) || v1 > vertices.length - 1) {
             valid[0] = ("error");
         }
-
         if(!(Number.isInteger(v2)) || v2 > vertices.length - 1) {
             valid[1] = "error";
         }
-
         if(v1 === v2) {
             valid[0] = "error";
             valid[1] = "error";
         }
-
         if(valid[0] === "error" || valid[1] === "error") {
             return valid;
         }
-
         let key;
         if(v1 > v2) {
             key = v2 + "." + v1;
@@ -153,37 +198,66 @@ export default function Data() {
         if(edges.has(key)) {
             return ["error", "error"]
         } else {
-            let newEdges = new Map(edges.set(key, {
+            setEdges(new Map(edges.set(key, {
                 "id": key,
                 "node1": v1,
                 "node2": v2,
                 "bent": false,
                 "posX": null,
                 "posY": null
-            }))
-            
-            let newBendPositions = new Map(bendPositions.set(key, {
+            })));
+
+
+            setBendPositions(new Map(bendPositions.set(key, {
                 "id": key,
                 "bent": false,
                 "posX": null,
                 "posY": null
-            }))
+            })));
 
-            setEdges(newEdges);
-            setBendPositions(newBendPositions);
             return ["success", "success"];
         }
     }
 
-    useEffect(() => {console.log(edges); console.log(bendPositions); console.log(edges)}, [edges])
+    const deleteEdgeTest = (v1, v2) => {
+        let valid = ["none", "none"];
+        v1 = Number(v1);
+        v2 = Number(v2);
+
+        if(!(Number.isInteger(v1)) || v1 > vertices.length - 1) valid[0] = ("error");
+        
+        if(!(Number.isInteger(v2)) || v2 > vertices.length - 1) valid[1] = "error";
+        
+        if(v1 === v2) {
+            valid[0] = "error";
+            valid[1] = "error";
+        }
+
+        if(valid[0] === "error" || valid[1] === "error") return valid;
+        let key;
+
+        if(v1 > v2) {
+            key = v2 + "." + v1;
+        } else {
+            key = v1 + "." + v2;
+        }
+        if(!edges.has(key)) {
+            return ["error", "error"]
+        } else {
+            deleteEdge(key);
+            return ["success", "success"];
+        }
+    }
+
+    useEffect(() => {}, [edges])
         
     return (
         <div style={{overflow:"auto"}}>
             <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
-                onMouseDown={(e) => {tryAddVertex(e)}}>
-                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} />
-                <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} 
-                            setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e)}}/>
+                onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
+                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex}/>
+                <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
+                            setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/>
             </div>
         </div>
     )
