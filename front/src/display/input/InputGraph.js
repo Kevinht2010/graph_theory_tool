@@ -11,12 +11,14 @@ export default class InputGraph {
         this.valid = true;
         this.errors = [];
         for(let i = 0; i < edges.length; ++i) {
+            this.errors.push("none");
             for(let neighbor of edges[i]) {
                 if(!this.addEdge(i, neighbor)) {
                     this.valid = false;
-                    this.errors.push("error");
-                } else {
-                    this.errors.push("none");
+                    this.errors[i] = ("error");
+                    break;
+                } else if (neighbor === "") {
+                    this.errors[i] = ("error");
                 }
             }
         }
