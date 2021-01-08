@@ -5,24 +5,24 @@ import GraphVisual from '../graphs/GraphVisual.js'
 export default function Data() {
     const [vertices, setVertices] = useState([{
             "id": 0,
-            "posX": 110,
+            "posX": 700,
             "posY": 100
         }, {
             "id": 1,
-            "posX": 120,
-            "posY": 170
+            "posX": 1000,
+            "posY": 300
         }, {
             "id": 2,
-            "posX": 300,
-            "posY": 350
+            "posX": 400,
+            "posY": 300
         }, {
             "id": 3,
-            "posX": 350,
-            "posY": 400
+            "posX": 900,
+            "posY": 620
         }, {
             "id": 4,
-            "posX": 400,
-            "posY": 500
+            "posX": 500,
+            "posY": 620
         }
     ])
 
@@ -89,6 +89,13 @@ export default function Data() {
         "bent": false,
         "posX": null,
         "posY": null
+    }, {
+        "id": "3.4",
+        "node1": 3,
+        "node2": 4,
+        "bent": false,
+        "posX": null,
+        "posY": null
     }]
 
     let edgesMap = new Map();
@@ -105,7 +112,7 @@ export default function Data() {
     const [bendPositions, setBendPositions] = useState(bdMap);
 
     const tryAddVertex = (e) => {
-        if(addingVertex) {
+        if(addingVertex && vertices.length <= 30) {
             addVertex(e.clientX - 45, e.clientY - 10)
         }
         setAddingVertex(false);
@@ -241,7 +248,6 @@ export default function Data() {
         } else {
             key = v1 + "." + v2;
         }
-        console.log(key);
         if(!edges.has(key)) {
             return ["error", "error"]
         } else {
@@ -256,7 +262,9 @@ export default function Data() {
         <div style={{overflow:"auto"}}>
             <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
                 onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
-                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}/>
+                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
+                        setVertices={setVertices} setEdges={setEdges} setBendPositions={setBendPositions}
+                />
                 <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
                             setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/>
             </div>

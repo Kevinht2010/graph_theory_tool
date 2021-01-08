@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { Button, Modal, Checkbox, Input, Form } from 'antd';
+import InputGraph from './InputGraph'
+import { Button, Modal, Checkbox, Input, Form, InputNumber } from 'antd';
 
 export default function Inputs(props) {
     const [showProperties, setShowProperties] = useState(false);
@@ -16,12 +17,118 @@ export default function Inputs(props) {
     const [v1, setV1] = useState("");
     const [v2, setV2] = useState("");
 
+    const [verticesInput, setVerticesInput] = useState(1);
+    const [vertices, setVertices] = useState(0);
+    const [vertexMessage, setVertexMessage] = useState();
+    const [edges, setEdges] = useState();
+    const [edgesMessage, setEdgesMessage] = useState();
+
+
     const options1 = ["Components", "Hamiltonian Cycles"];
     const options2 = ["Spanning Trees", "Euler Tours"];
     const options3 = ["Planarity", "Longest/Shortest Cycles"];
 
     function onChange(checkedValues) {
         console.log('checked = ', checkedValues);
+    }
+
+    const addVertices = () => {
+        setVertices(verticesInput);
+        let k = Array(verticesInput);
+        k.fill([]);
+        setEdges(k);
+        let m = Array(verticesInput);
+        m.fill("none")
+        setEdgesMessage(m);
+    }
+
+    const addEdges = () => {
+        let inputGraph = new InputGraph(vertices, edges);
+        console.log(vertices, edges);
+        console.log(inputGraph.valid);
+        console.log(inputGraph.errors);
+        if(inputGraph.valid === true) {
+            props.setVertices(inputGraph.vertices);
+            props.setEdges(inputGraph.edges);
+            props.setBendPositions(inputGraph.bendPositions)
+            clearInput();
+        } else {
+            setEdgesMessage(inputGraph.errors);
+        }
+    }
+
+    const clearInput = () => {
+        setVertices(0);
+        setShowInput(false); 
+        setVertexMessage("none");
+        setEdges();
+        setEdgesMessage();
+    }
+
+    const getGraphInput = () => {
+        const footer = (
+            <React.Fragment>
+                <Button key="back" onClick={() => {clearInput()}}>
+                    Cancel
+                </Button>
+                <Button type="primary" onClick={() => {
+                        vertices === 0 ? addVertices() : addEdges();
+                    }
+                }>
+                    {vertices === 0 ? "Continue" : "Input Graph"}
+                </Button>
+            </React.Fragment>
+        )
+
+        const hasVertexCount = () => {
+            if(vertices === 0) {
+                return (
+                    <Form.Item
+                        label="Number of Vertices (Max 20)"
+                        name="v1"
+                        validateStatus={addEdgeValidStatus1}
+                        help={vertexMessage === "error" ? "Invalid Input" : null}
+                    >
+                        <InputNumber onPressEnter={(e) => {setVertices(verticesInput)}} autoComplete="off" onChange={(value) => setVerticesInput(value)} 
+                                    min={1} max={20} defaultValue={1}/>
+                    </Form.Item>
+                )
+            } else {
+                let k = [];
+                for(let i = 0; i < vertices; ++i) {
+                    k.push(
+                        <Form.Item
+                            validateStatus={edgesMessage[i]}
+                            help={edgesMessage[i] === "error" ? "Invalid Input" : null}
+                            label={JSON.stringify(i)}
+                        >
+                            <Input defaultValue="" style={{width:"70px", margin:"2px"}} onPressEnter={(e) => {addEdges()}} autoComplete="off" onChange={(e) => 
+                                    {let newEdges = [...edges]; newEdges[i] = (e.target.value).split(" ").join("").split(","); setEdges(newEdges);}} />
+                        </Form.Item>
+                    )
+                }
+                return (
+                    <React.Fragment>
+                        <div style={{marginTop:"-15px", marginBottom:"35px"}}>Edges (adjacency list, seperating neighbors of each vertex with commas)</div>
+                        <div style={{display:"flex", width:"350px", marginLeft:"auto", marginRight:"auto", flexWrap:"wrap", justifyContent:"space-around"}}>
+                            {k}
+                        </div>
+                    </React.Fragment>
+                )
+            }
+        }
+
+        return (
+            <Modal style={{top: "10%"}} title="Input Graph" visible={showInput} onCancel={() => {clearInput()}} footer={footer}>
+                 <div style={{display:"flex", width:"100%", justifyContent:"center", marginTop:"10px", marginBottom:"-5px", marginLeft:"-10px"}}>
+                    <Form
+                        onMouseDown={() => {setAddEdgeValidStatus1("none")}}
+                        >
+                        {hasVertexCount()}
+                    </Form>
+                 </div>
+            </Modal>
+        )
     }
 
     const getProperties = () => {
@@ -149,14 +256,10 @@ export default function Inputs(props) {
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => {props.straightenEdges()}}>Straighten Edges</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowProperties(true)}>Graph Properties</Button>
             </div>
-            <Modal style={{top: "25%"}} title="Graph Input" visible={showInput} onOk={() => {setShowInput(false)}} onCancel={() => {setShowInput(false)}}>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-            </Modal>
+            {getGraphInput()}
             {getProperties()}
             {getEditEdge()}
-            <div style={{position:"absolute", display:"flex", right:"3%", bottom:"15%", flexWrap:"wrap", width:"125px"}}>
+            <div style={{position:"absolute", display:"flex", right:"3%", bottom:"6%", flexWrap:"wrap", width:"125px"}}>
                 <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
                         onClick={() => {setDeleteEdge(true); setEditEdge(true);}}>
                     Delete Edge
