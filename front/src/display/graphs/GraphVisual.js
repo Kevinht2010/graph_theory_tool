@@ -83,7 +83,6 @@ export default function GraphVisual(props) {
 
     const updateEdges = (a) => {
         let e = [];
-        console.log(props.edges, props.vertices);
         props.edges.forEach((edge) => {
             e.push(<Edge dragStart={dragStart} dragEnd={dragEnd} id={edge.id} node1={props.vertices[edge.node1]} 
                     node2={props.vertices[edge.node2]} bendPos={props.bendPositions.get(edge.id)}/>)
@@ -95,7 +94,7 @@ export default function GraphVisual(props) {
 
     return (
         <svg style={{height:"600vh", width:"600vw", backgroundColor: '#dbedff'}} 
-            onMouseOver={() => {setMouseIn(true)}} onMouseLeave={(e) => {console.log("Out"); dragging(e); setMouseIn(false); dragEnd()}}
+            onMouseOver={() => {setMouseIn(true)}} onMouseLeave={(e) => {dragging(e); setMouseIn(false); dragEnd()}}
             onMouseMove={(e) => {dragging(e)}} onMouseUp={() => dragEnd()}>
             {updateEdges()}
             {updateVertices()}

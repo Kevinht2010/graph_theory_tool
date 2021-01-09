@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import InputGraph from './InputGraph'
 import { Button, Modal, Checkbox, Input, Form, InputNumber } from 'antd';
+import Authentication from '../authentication/Authentication'
 
 export default function Inputs(props) {
     const [showProperties, setShowProperties] = useState(false);
@@ -27,10 +28,6 @@ export default function Inputs(props) {
     const options1 = ["Components", "Hamiltonian Cycles"];
     const options2 = ["Spanning Trees", "Euler Tours"];
     const options3 = ["Planarity", "Longest/Shortest Cycles"];
-
-    function onChange(checkedValues) {
-        console.log('checked = ', checkedValues);
-    }
 
     const addVertices = () => {
         setVertices(verticesInput);
@@ -159,9 +156,9 @@ export default function Inputs(props) {
         } else {
             content = (
                 <div style={{display:"flex", justifyContent:"center"}}>
-                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options1} onChange={onChange} />
-                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options2} onChange={onChange} />
-                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options3} onChange={onChange} />
+                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options1} />
+                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options2} />
+                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options3} />
                 </div>
             )
         }
@@ -255,6 +252,7 @@ export default function Inputs(props) {
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowInput(true)}>Input Graph</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => {props.straightenEdges()}}>Straighten Edges</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowProperties(true)}>Graph Properties</Button>
+                <Authentication />
             </div>
             {getGraphInput()}
             {getProperties()}
