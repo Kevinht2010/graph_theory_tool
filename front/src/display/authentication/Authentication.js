@@ -4,7 +4,7 @@ export default function Authentication() {
     const [email, setEmail] = useState();
 
     useEffect(() => {
-        fetch('/login').then(response => {
+        fetch('/api').then(response => {
             if(response.ok) {
                 return response.json()
             }
@@ -13,10 +13,10 @@ export default function Authentication() {
 
     const submit = (e) => {
         e.preventDefault();
-        fetch('/login', {
+        fetch('/api', {
             method: 'POST',
             body: JSON.stringify({
-                'email': email // change here
+                content: email // change here
             }),
             headers: {
                 "Content-type": "application/json"
