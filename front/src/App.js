@@ -6,8 +6,8 @@ import GraphVisual from './display/graphs/GraphVisual'
 import { useEffect, useState } from 'react'
 import { BFSCycle, BFSNoRepeat, BFSRepeat } from './logic/algorithms/BFS'
 import Components from './logic/algorithms/Components'
-import Data from './display/data/Data.js';
 import 'antd/dist/antd.css';
+import Routes from './routing/Routes'
 
 function App() {
   useEffect(() => {
@@ -22,7 +22,7 @@ function App() {
   })
   return (
     <React.Fragment>
-      <Data />
+      <Routes/>
     </React.Fragment>
   );
 }
