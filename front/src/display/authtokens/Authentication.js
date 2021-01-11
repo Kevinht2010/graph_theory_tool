@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+/* import React, {useEffect, useState} from 'react'
 export default function Authentication() {
     const [submitBool, setSubmitBool] = useState(false);
     const [email, setEmail] = useState();
@@ -34,3 +34,4 @@ export default function Authentication() {
         </div>
     )
 }
+*/

@@ -1,20 +1,26 @@
 import React, {useState, useEffect} from 'react'
 import InputGraph from './InputGraph'
 import { Button, Modal, Checkbox, Input, Form, InputNumber } from 'antd';
-import Authentication from '../authentication/Authentication'
+import {UserOutlined} from '@ant-design/icons'
+import Profile from './Profile.js'
+
+
+
+// Will Refactor Soon
+
+
 
 export default function Inputs(props) {
     const [showProperties, setShowProperties] = useState(false);
-    const [isUpdatingProperties, setIsUpdatingProperties] = useState(false);
     const [showInput, setShowInput] = useState(false);
     const [properties, setProperties] = useState([{"id": "cycles", "value": "5"}]);
-    const [prevProperties, setPrevProperties] = useState([]);
+
     const [editEdge, setEditEdge] = useState(false);
-    const [addEdge, setAddEdge] = useState(false);
     const [deleteEdge, setDeleteEdge] = useState(false);
+    const [addEdge, setAddEdge] = useState(false);
     const [addEdgeValidStatus1, setAddEdgeValidStatus1] = useState("none");
     const [addEdgeValidStatus2, setAddEdgeValidStatus2] = useState("none");
-    const [graphOptions, setGraphOptions] = useState();
+
     const [v1, setV1] = useState("");
     const [v2, setV2] = useState("");
 
@@ -24,6 +30,7 @@ export default function Inputs(props) {
     const [edges, setEdges] = useState();
     const [edgesMessage, setEdgesMessage] = useState();
 
+    const [profileModal, setProfileModal] = useState(false);
 
     const options1 = ["Components", "Hamiltonian Cycles"];
     const options2 = ["Spanning Trees", "Euler Tours"];
@@ -252,8 +259,14 @@ export default function Inputs(props) {
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowInput(true)}>Input Graph</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => {props.straightenEdges()}}>Straighten Edges</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowProperties(true)}>Graph Properties</Button>
-                <Authentication />
             </div>
+            <Button style={{position:"absolute", right:"70px", top:"40px"}} onClick={() => setProfileModal(true)}>
+                <UserOutlined />
+            </Button>
+            <Profile modal={profileModal} setModal={setProfileModal} loggedIn={props.loggedIn} logIn={props.logIn} logOut={props.logOut}
+                    edges={props.edges} vertices={props.vertices} bendPositions={props.bendPositions} setEdges={props.setEdges} setVertices={props.setVertices}
+                    setBendPositions={props.setBendPositions}
+                    />
             {getGraphInput()}
             {getProperties()}
             {getEditEdge()}

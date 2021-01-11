@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useLocation, withRouter} from 'react-router-dom';
 
-function TokenPage() {
+function TokenPage(props) {
     const [id, setID] = useState((useLocation().pathname).replace("/confirm_email", ""));
     const [message, setMessage] = useState("Temp");
 
@@ -14,17 +14,31 @@ function TokenPage() {
             headers: {
                 "Content-type": "application/json"
             }
-        }).then(response => response.json()).then(message => setMessage(message.status))
+        }).then(response => response.json()).then(msg => login(msg))
+    }
+
+    const login = (msg) => {
+        setMessage(msg);
+        console.log(msg);
+
+        if(msg.status === "Accepted") {
+            props.login(msg.email);
+            window.localtion.replace("http://localhost:3000/")
+        }
     }
 
     useEffect(() => {
-        submit()
+        if(props.loggedIn === true) {
+            window.location.replace("http://localhost:3000/");
+        } else {
+            submit();
+        }
     }, [])
 
     return (
-        <div>
-            {message}
-        </div>
+        <h1>
+            {message.status}
+        </h1>
     )
 }
 

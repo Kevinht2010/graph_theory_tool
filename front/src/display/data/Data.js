@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import Inputs from '../../display/input/Inputs.js'
 import GraphVisual from '../graphs/GraphVisual.js'
 
-export default function Data() {
+export default function Data(props) {
     const [vertices, setVertices] = useState([{
             "id": 0,
             "posX": 700,
@@ -263,7 +263,8 @@ export default function Data() {
             <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
                 onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
                 <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
-                        setVertices={setVertices} setEdges={setEdges} setBendPositions={setBendPositions}
+                        setVertices={setVertices} setEdges={setEdges} setBendPositions={setBendPositions} edges={edges} vertices={vertices} bendPositions={bendPositions}
+                        logIn={props.login} logOut={props.logout} loggedIn={props.loggedIn}
                 />
                 <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
                             setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/>
