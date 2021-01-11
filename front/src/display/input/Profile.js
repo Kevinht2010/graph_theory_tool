@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react'
 import { Alert, Button, Modal, Input, Form, InputNumber } from 'antd';
 
 export default function Profile(props) {
-    const [timer, setTimeer] = useState();
-    const [graph, setGraph] = useState();
     const [email, setEmail] = useState();
     const [emailError, setEmailError] = useState(false);
     const [sent, setSent] = useState(false);
@@ -45,13 +43,12 @@ export default function Profile(props) {
                 headers: {
                     "Content-type": "application/json"
                 }
-            }).then(response => response.json()).then(msg => console.log(msg))
+            }).then(response => response.json()).then(msg => {console.log(msg); setGraphRetrieved(true)})
         }
     }
 
     const saveGraph = () => {
         if(props.loggedIn == true) {
-            console.log("???")
             fetch('/api/upload', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -64,9 +61,7 @@ export default function Profile(props) {
                 headers: {
                     "Content-type": "application/json"
                 }
-            }).then(response => response.json()).then(msg => console.log(msg))
-        } else {
-            console.log("failed")
+            }).then(response => response.json()).then(msg => {console.log(msg); setGraphSaved(true)})
         }
     }
 
