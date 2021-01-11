@@ -38,12 +38,18 @@ export default function Profile(props) {
                 method: 'POST',
                 body: JSON.stringify({
                     'type': "retrieve",
-                    'email': localStorage.getItem(email)
+                    'email': localStorage.getItem("email")
                 }),
                 headers: {
                     "Content-type": "application/json"
                 }
-            }).then(response => response.json()).then(msg => {console.log(msg); setGraphRetrieved(true)})
+            }).then(response => response.json()).then(msg => {console.log(msg); setGraphRetrieved(true)
+                let e = new Map(JSON.parse(msg.edges));
+                let bp = new Map(JSON.parse(msg.bentpos));
+                props.setEdges(e);
+                props.setVertices(JSON.parse(msg.vertices));
+                props.setBendPositions(bp);
+            })
         }
     }
 
@@ -53,10 +59,10 @@ export default function Profile(props) {
                 method: 'POST',
                 body: JSON.stringify({
                     'type': "upload",
-                    'email': localStorage.getItem(email),
-                    'edges': JSON.stringify(props.edges),
+                    'email': localStorage.getItem("email"),
+                    'edges': JSON.stringify(Array.from(props.edges.entries())),
                     'vertices': JSON.stringify(props.vertices),
-                    'bentpos': JSON.stringify(props.bendPositions)
+                    'bentpos': JSON.stringify(Array.from(props.bendPositions.entries()))
                 }),
                 headers: {
                     "Content-type": "application/json"
@@ -160,7 +166,7 @@ export default function Profile(props) {
     const getLogin = () => {
         let footer = (
             <React.Fragment>
-                <Button key="back" onClick={() => {exit()}} style={{margin:"10px", marginRight:"240px"}}>
+                <Button key="back" onClick={() => {exit()}} style={{marginTop:"10px", marginBottom:"10px", marginRight:"46%"}}>
                     Return
                 </Button>
                 <Button type="primary" key="back" onClick={() => {authenticate(email)}}>

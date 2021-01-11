@@ -4,7 +4,6 @@ from flask_mail import Message
 from itsdangerous import SignatureExpired
 from graphtt.models import User, Graph
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def auth():
     if request.method == 'GET':
@@ -27,10 +26,13 @@ def confirm_email(token):
             return {'status': "Expired"}
         except:
             return {'status': "Invalid"}
-        #         user = User(email=mail)
-        #         db.session.add(user)
-        #         db.session.commit()
-        return {'status': "Accepted", "email":mail}
+        user = User.query.filter_by(email=mail)
+        if user.count() == 0:
+            new_user = User(email=mail)
+            db.session.add(new_user)
+            db.session.commit()
+
+        return {'status': "Accepted", "email": mail}
     return {'status': "None"}
 
 
@@ -42,11 +44,11 @@ def upload():
     e = request.get_json()['edges']
     v = request.get_json()['vertices']
     bs = request.get_json()['bentpos']
-    user = User.query.filter_by(email=mail).first()
-    i = user.id()
-    db.session.delete(user.graph())
-    db.session.commit()
-    graph = Graph(edges=e, vertices=v, bentpos=bs, id=i)
+    g = Graph.query.filter_by(em=mail).first()
+    if g is not None:
+        db.session.delete(g)
+        db.session.commit()
+    graph = Graph(edges=e, vertices=v, bentpos=bs, em=mail, user_id=1)
     db.session.add(graph)
     db.session.commit()
     return { 'upload' : 'done'}
@@ -58,8 +60,7 @@ def retrieve():
         return {"action": "none"}
 
     m = request.get_json()['email']
-    user = User.query.filter_by(email=m).first()
-    g = user.graph()
+    g = Graph.query.filter_by(em=m).first()
     ed = g.edges
     ve = g.vertices
     bp = g.bentpos
