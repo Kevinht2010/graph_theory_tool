@@ -5,24 +5,24 @@ import GraphVisual from '../graphs/GraphVisual.js'
 export default function Data(props) {
     const [vertices, setVertices] = useState([{
             "id": 0,
-            "posX": 700,
-            "posY": 100
+            "posX": 850,
+            "posY": 200
         }, {
             "id": 1,
-            "posX": 1000,
-            "posY": 300
+            "posX": 1150,
+            "posY": 400
         }, {
             "id": 2,
-            "posX": 400,
-            "posY": 300
+            "posX": 550,
+            "posY": 400
         }, {
             "id": 3,
-            "posX": 900,
-            "posY": 620
+            "posX": 1050,
+            "posY": 720
         }, {
             "id": 4,
-            "posX": 500,
-            "posY": 620
+            "posX": 650,
+            "posY": 720
         }
     ])
 

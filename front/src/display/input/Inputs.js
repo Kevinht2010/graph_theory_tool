@@ -261,9 +261,11 @@ export default function Inputs(props) {
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowProperties(true)}>Graph Properties</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => props.centerGraph()}>Center Graph</Button>
             </div>
-            <Button style={{position:"absolute", right:"70px", top:"40px"}} onClick={() => setProfileModal(true)}>
-                <UserOutlined />
-            </Button>
+            <div style={{position:"absolute", marginLeft:"25px", bottom:"calc(6vh + 15px)"}}>
+                <Button style={{width:"55px", height:"45px"}} type="primary" onClick={() => setProfileModal(true)}>
+                    <UserOutlined style={{}}/>
+                </Button>
+            </div>
             <Profile modal={profileModal} setModal={setProfileModal} loggedIn={props.loggedIn} logIn={props.logIn} logOut={props.logOut}
                     edges={props.edges} vertices={props.vertices} bendPositions={props.bendPositions} setEdges={props.setEdges} setVertices={props.setVertices}
                     setBendPositions={props.setBendPositions}
