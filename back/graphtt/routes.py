@@ -9,9 +9,10 @@ def auth():
     if request.method == 'GET':
         return {"action": "none"}
     email = request.get_json()['email']
+    route = request.get_json()['route']
     token = s.dumps(email, salt='email-confirm')
     msg = Message('Email Confirmation', sender='graphtheorytool@gmail.com', recipients=[email])
-    link = "http://localhost:3000/" + "confirm_email/" + token
+    link = route + "confirm_email/" + token
     msg.body = 'Your email confirmation link is {}. Thanks and have a wonderful day!'.format(link)
     mail.send(msg)
     return {"token": token}

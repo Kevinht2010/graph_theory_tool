@@ -154,7 +154,6 @@ export default function Data(props) {
                 newBendPositions.set(substr1 + "." + substr2, newBendVal);
             }
         })
-        console.log(newBendPositions)
         setEdges(newEdges);
         setBendPositions(newBendPositions);
         setDeletingVertex(false);
@@ -256,6 +255,20 @@ export default function Data(props) {
         }
     }
 
+    const centerGraph = () => {
+        let newVertices = [];
+        vertices.forEach(vertex => {
+            console.log(vertex);
+            vertex.posX = 750;
+            vertex.posY = 420;
+
+            newVertices.push(vertex);
+        })
+
+        setVertices(newVertices);
+        straightenEdges();
+    }
+
     useEffect(() => {}, [edges])
         
     return (
@@ -264,7 +277,7 @@ export default function Data(props) {
                 onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
                 <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
                         setVertices={setVertices} setEdges={setEdges} setBendPositions={setBendPositions} edges={edges} vertices={vertices} bendPositions={bendPositions}
-                        logIn={props.login} logOut={props.logout} loggedIn={props.loggedIn}
+                        logIn={props.login} logOut={props.logout} loggedIn={props.loggedIn} centerGraph={centerGraph}
                 />
                 <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
                             setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/>

@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import { Alert, Button, Modal, Input, Form, InputNumber } from 'antd';
+import { useLocation, withRouter } from 'react-router-dom'
 
-export default function Profile(props) {
+function Profile(props) {
     const [email, setEmail] = useState();
     const [emailError, setEmailError] = useState(false);
     const [sent, setSent] = useState(false);
     const [graphSaved, setGraphSaved] = useState(false);
     const [graphRetrieved, setGraphRetrieved] = useState(false);
     const [failedRetrieve, setFailedRetrieve] = useState(false);
-
+    const [location, setLocation] = useState(window.location.href)
+ 
     useEffect(() => {}, [props.modal]);
 
     function validateEmail(email) {
@@ -17,11 +19,13 @@ export default function Profile(props) {
     }
 
     const authenticate = (email) => {
+        console.log(location)
         if(validateEmail(email)) {
             fetch('/login', {
                 method: 'POST',
                 body: JSON.stringify({
-                    'email': email // change here
+                    'email': email, // change here
+                    'route': location
                 }),
                 headers: {
                     "Content-type": "application/json"
@@ -201,3 +205,5 @@ export default function Profile(props) {
         </React.Fragment>
     )
 }
+
+export default withRouter(Profile)
