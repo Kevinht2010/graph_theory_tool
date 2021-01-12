@@ -18,15 +18,20 @@ function TokenPage(props) {
 
     const login = (msg) => {
         setMessage(msg);
+
         if(msg.status === "Accepted") {
             props.login(msg.email);
-            window.localtion.replace("http://localhost:3000/")
+            let k = window.location.href;
+            let m = k.search("/confirm_email");
+            window.location.replace(k.substr(0,m));
         }
     }
 
     useEffect(() => {
         if(props.loggedIn === true) {
-            window.location.replace("http://localhost:3000/");
+            let k = window.location.href;
+            let m = k.search("/confirm_email");
+            window.location.replace(k.substr(0,m));
         } else {
             submit();
         }

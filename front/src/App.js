@@ -11,13 +11,6 @@ import Routes from './routing/Routes'
 
 function App() {
   useEffect(() => {
-    let adj = [[0,1,0,1], [1,0,1,1], [0,1,0,1], [1,1,1,0]];
-    let graph = new Graph(adj);
-    let vertices = BFSCycle(graph, 0);
-
-    let k = new Components(graph);
-    console.log(k.getComponents());
-    console.log(k.getComponentCount());
     
   })
   return (
@@ -28,3 +21,12 @@ function App() {
 }
 
 export default App;
+
+/*     let adj = [[0,1,0,1], [1,0,1,1], [0,1,0,1], [1,1,1,0]];
+    let graph = new Graph(adj);
+    let vertices = BFSCycle(graph, 0);
+
+    let k = new Components(graph);
+    console.log(k.getComponents());
+    console.log(k.getComponentCount()); */
+    
