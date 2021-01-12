@@ -70,5 +70,10 @@ def retrieve():
     return {'edges': ed, 'vertices': ve, 'bentpos': bp}
 
 
+@app.route('/', methods=['GET', 'POST'])
+def hello():
+    return ""
+
+
 if __name__ == '__main__':
     app.run(debug=True)

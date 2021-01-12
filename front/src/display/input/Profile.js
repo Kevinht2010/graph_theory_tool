@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { Alert, Button, Modal, Input, Form, InputNumber } from 'antd';
 import { useLocation, withRouter } from 'react-router-dom'
+import axios from 'axios';
 
 function Profile(props) {
     const [email, setEmail] = useState();
@@ -9,7 +10,7 @@ function Profile(props) {
     const [graphSaved, setGraphSaved] = useState(false);
     const [graphRetrieved, setGraphRetrieved] = useState(false);
     const [failedRetrieve, setFailedRetrieve] = useState(false);
-    const [location, setLocation] = useState(window.location.href)
+    const [location, setLocation] = useState(window.location.href);
  
     useEffect(() => {}, [props.modal]);
 
@@ -21,7 +22,7 @@ function Profile(props) {
     const authenticate = (email) => {
         console.log(location)
         if(validateEmail(email)) {
-            fetch('/login', {
+            fetch('https://graphtt.herokuapp.com/login', {
                 method: 'POST',
                 body: JSON.stringify({
                     'email': email, // change here
@@ -38,7 +39,7 @@ function Profile(props) {
 
     const getGraph = () => {
         if(props.loggedIn == true) {
-            fetch('/api/retrieve', {
+            fetch('https://graphtt.herokuapp.com/api/retrieve', {
                 method: 'POST',
                 body: JSON.stringify({
                     'type': "retrieve",
@@ -59,7 +60,7 @@ function Profile(props) {
 
     const saveGraph = () => {
         if(props.loggedIn == true) {
-            fetch('/api/upload', {
+            fetch('https://graphtt.herokuapp.com/api/upload', {
                 method: 'POST',
                 body: JSON.stringify({
                     'type': "upload",
