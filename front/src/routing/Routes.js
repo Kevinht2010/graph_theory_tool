@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Switch, BrowserRouter as Router, Route, Redirect} from 'react-router-dom';
+import { Switch, HashRouter as Router, Route, Redirect} from 'react-router-dom';
 import Data from '../display/data/Data';
 import TokenPage from '../display/authtokens/TokenPage';
 

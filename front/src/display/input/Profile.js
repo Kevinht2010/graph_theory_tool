@@ -10,7 +10,6 @@ function Profile(props) {
     const [graphSaved, setGraphSaved] = useState(false);
     const [graphRetrieved, setGraphRetrieved] = useState(false);
     const [failedRetrieve, setFailedRetrieve] = useState(false);
-    const [location, setLocation] = useState(window.location.href);
  
     useEffect(() => {}, [props.modal]);
 
@@ -20,13 +19,12 @@ function Profile(props) {
     }
 
     const authenticate = (email) => {
-        console.log(location)
         if(validateEmail(email)) {
             fetch('https://graphtt.herokuapp.com/login', {
                 method: 'POST',
                 body: JSON.stringify({
                     'email': email, // change here
-                    'route': location
+                    'route': "https://u3anand.github.io/graphtool/#/"
                 }),
                 headers: {
                     "Content-type": "application/json"
