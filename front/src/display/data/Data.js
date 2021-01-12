@@ -1,30 +1,33 @@
 import React, {useEffect, useState} from 'react'
 import Inputs from '../../display/input/Inputs.js'
 import GraphVisual from '../graphs/GraphVisual.js'
+import Error from '../error/Error.js'
 
 export default function Data(props) {
-    const [vertices, setVertices] = useState([{
-            "id": 0,
-            "posX": 850,
-            "posY": 200
-        }, {
-            "id": 1,
-            "posX": 1150,
-            "posY": 400
-        }, {
-            "id": 2,
-            "posX": 550,
-            "posY": 400
-        }, {
-            "id": 3,
-            "posX": 1050,
-            "posY": 720
-        }, {
-            "id": 4,
-            "posX": 650,
-            "posY": 720
-        }
-    ])
+    let tvertices = [{
+        "id": 0,
+        "posX": 850,
+        "posY": 200
+    }, {
+        "id": 1,
+        "posX": 1150,
+        "posY": 400
+    }, {
+        "id": 2,
+        "posX": 550,
+        "posY": 400
+    }, {
+        "id": 3,
+        "posX": 1050,
+        "posY": 720
+    }, {
+        "id": 4,
+        "posX": 650,
+        "posY": 720
+    }]
+
+    const [updating, setUpdating] = useState(false);
+    const [vertices, setVertices] = useState(null)
 
     const edgesArray = [{
         "id": "0.1",
@@ -106,10 +109,21 @@ export default function Data(props) {
         bdMap.set(edge.node1 + "." + edge.node2, {"id": edge.id, "bent":edge.bent, "posX": edge.posX, "posY":edge.posY});
     })
 
-    const [edges, setEdges] = useState(edgesMap);
+    const [edges, setEdges] = useState(null);
     const [addingVertex, setAddingVertex] = useState(false);
     const [deletingVertex, setDeletingVertex] = useState(false);
-    const [bendPositions, setBendPositions] = useState(bdMap);
+    const [bendPositions, setBendPositions] = useState(null);
+
+    const setGraph = (edges, vertices, bp) => {
+        setUpdating(true);
+        setVertices(vertices);
+        setEdges(edges);
+        setBendPositions(bp);
+    }
+
+    if(vertices === null) {
+        setGraph(edgesMap, tvertices, bdMap)
+    }
 
     const tryAddVertex = (e) => {
         if(addingVertex && vertices.length <= 30) {
@@ -269,19 +283,43 @@ export default function Data(props) {
         straightenEdges();
     }
 
-    useEffect(() => {}, [edges])
+    const [width, setWidth] = useState(window.innerWidth)
+
+    useEffect(() => {
+        if(updating) setUpdating(false);
+
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    
+    
+    }, [edges, bendPositions, window.innerWidth])
+
+    const getReturn = () => {
+        if(window.innerWidth > "670") {
+            return (
+                <div style={{overflow:"auto"}}>
+                    <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
+                        onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
+                        <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
+                                setGraph={setGraph} edges={edges} vertices={vertices} bendPositions={bendPositions}
+                                logIn={props.login} logOut={props.logout} loggedIn={props.loggedIn} centerGraph={centerGraph}
+                        />
+                        {updating ? <React.Fragment/> : <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
+                                    setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/> }
+                    </div>
+                </div>
+            )
+        } else {
+            return <Error />
+        }
+    }
         
     return (
-        <div style={{overflow:"auto"}}>
-            <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
-                onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
-                <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
-                        setVertices={setVertices} setEdges={setEdges} setBendPositions={setBendPositions} edges={edges} vertices={vertices} bendPositions={bendPositions}
-                        logIn={props.login} logOut={props.logout} loggedIn={props.loggedIn} centerGraph={centerGraph}
-                />
-                <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
-                            setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/>
-            </div>
-        </div>
+        <React.Fragment>
+            {getReturn()}
+        </React.Fragment>
     )
 }

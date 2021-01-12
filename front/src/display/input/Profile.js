@@ -51,14 +51,13 @@ function Profile(props) {
             }).then(response => response.json()).then(msg => {console.log(msg); setGraphRetrieved(true)
                 let e = new Map(JSON.parse(msg.edges));
                 let bp = new Map(JSON.parse(msg.bentpos));
-                props.setEdges(e);
-                props.setVertices(JSON.parse(msg.vertices));
-                props.setBendPositions(bp);
+                props.setGraph(e, JSON.parse(msg.vertices), bp);
             })
         }
     }
 
     const saveGraph = () => {
+        console.log(props.bendPositions)
         if(props.loggedIn == true) {
             fetch('https://graphtt.herokuapp.com/api/upload', {
                 method: 'POST',
@@ -72,7 +71,7 @@ function Profile(props) {
                 headers: {
                     "Content-type": "application/json"
                 }
-            }).then(response => response.json()).then(msg => {console.log(msg); setGraphSaved(true)})
+            }).then(response => response.json()).then(msg => {setGraphSaved(true)})
         }
     }
 

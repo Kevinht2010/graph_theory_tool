@@ -48,13 +48,8 @@ export default function Inputs(props) {
 
     const addEdges = () => {
         let inputGraph = new InputGraph(vertices, edges);
-        console.log(vertices, edges);
-        console.log(inputGraph.valid);
-        console.log(inputGraph.errors);
         if(inputGraph.valid === true) {
-            props.setVertices(inputGraph.vertices);
-            props.setEdges(inputGraph.edges);
-            props.setBendPositions(inputGraph.bendPositions)
+            props.setGraph(inputGraph.edges, inputGraph.vertices, inputGraph.bendPositions);
             clearInput();
         } else {
             setEdgesMessage(inputGraph.errors);
@@ -267,8 +262,7 @@ export default function Inputs(props) {
                 </Button>
             </div>
             <Profile modal={profileModal} setModal={setProfileModal} loggedIn={props.loggedIn} logIn={props.logIn} logOut={props.logOut}
-                    edges={props.edges} vertices={props.vertices} bendPositions={props.bendPositions} setEdges={props.setEdges} setVertices={props.setVertices}
-                    setBendPositions={props.setBendPositions}
+                    edges={props.edges} vertices={props.vertices} bendPositions={props.bendPositions} setGraph={props.setGraph}
                     />
             {getGraphInput()}
             {getProperties()}
