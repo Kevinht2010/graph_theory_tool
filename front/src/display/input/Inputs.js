@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import InputGraph from './InputGraph'
-import { Button, Modal, Checkbox, Input, Form, InputNumber } from 'antd';
-import {UserOutlined} from '@ant-design/icons'
+import { Button, Modal, Checkbox, Input, Form, InputNumber, Alert } from 'antd';
+import { UserOutlined } from '@ant-design/icons'
 import Profile from './Profile.js'
-
+import Properties from './Properties';
 
 
 // Will Refactor Soon
@@ -31,10 +31,6 @@ export default function Inputs(props) {
     const [edgesMessage, setEdgesMessage] = useState();
 
     const [profileModal, setProfileModal] = useState(false);
-
-    const options1 = ["Components", "Hamiltonian Cycles"];
-    const options2 = ["Spanning Trees", "Euler Tours"];
-    const options3 = ["Planarity", "Longest/Shortest Cycles"];
 
     const addVertices = () => {
         setVertices(verticesInput);
@@ -133,39 +129,24 @@ export default function Inputs(props) {
     const getProperties = () => {
         let content;
         let footer;
-        if(properties.length > 0) {
-            const data = properties.map((item) => {
-                return <p>{item.id + " " + item.value}</p>
-            })
 
-            content = (
-                <React.Fragment>
-                    {data}
-                </React.Fragment>
-            )
+        content = (
+            <React.Fragment>
+                <Properties vertices={props.vertices} edges={props.edges}/>
+                <Alert message="Some feature are still in progress (number of spanning forests, planarity, etc.) - please check back in a few days!" type="warning" showIcon  />
+            </React.Fragment>
+        )
 
-            footer = (
-                <React.Fragment>
-                    <Button type="primary" style={{marginRight:"32%"}} onClick={() => setProperties([])}>Generate Different Properties</Button>
-                    <Button key="back" onClick={() => {setShowProperties(false)}}>
-                        Return
-                    </Button>
-                    <Button key="submit" type="primary" onClick={() => {setShowProperties(false)}}>
-                        Confirm
-                    </Button>
-                </React.Fragment>
-            )
-        } else {
-            content = (
-                <div style={{display:"flex", justifyContent:"center"}}>
-                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options1} />
-                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options2} />
-                    <Checkbox.Group style={{display:"flex", width:"180px", flexWrap:"wrap"}} options={options3} />
-                </div>
-            )
-        }
+        footer = (
+            <React.Fragment>
+                <Button key="submit" type="primary" onClick={() => {setShowProperties(false)}}>
+                    Return
+                </Button>
+            </React.Fragment>
+        )
+        
         return (
-            <Modal style={{top: "25%"}} width={"600px"} bodyStyle={{minHeight:"200px"}} title="Graph Properties" visible={showProperties} onOk={() => {setShowProperties(false)}} onCancel={() => {setShowProperties(false)}}
+            <Modal style={{top: "15%"}} width={"600px"} bodyStyle={{minHeight:"200px"}} title="Graph Properties" visible={showProperties} onOk={() => {setShowProperties(false)}} onCancel={() => {setShowProperties(false)}}
                     footer={footer}>
                 {content}
             </Modal>
@@ -258,7 +239,7 @@ export default function Inputs(props) {
             </div>
             <div style={{position:"absolute", marginLeft:"25px", bottom:"calc(6vh + 15px)"}}>
                 <Button style={{width:"55px", height:"45px"}} type="primary" onClick={() => setProfileModal(true)}>
-                    <UserOutlined style={{}}/>
+                    <UserOutlined/>
                 </Button>
             </div>
             <Profile modal={profileModal} setModal={setProfileModal} loggedIn={props.loggedIn} logIn={props.logIn} logOut={props.logOut}

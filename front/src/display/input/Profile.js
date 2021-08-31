@@ -24,7 +24,7 @@ function Profile(props) {
                 method: 'POST',
                 body: JSON.stringify({
                     'email': email, // change here
-                    'route': "https://u3anand.github.io/graphtool/#/"
+                    'route': "https://kevinht2010.github.io/graphtool/#/"
                 }),
                 headers: {
                     "Content-type": "application/json"
@@ -90,7 +90,7 @@ function Profile(props) {
         )
 
         return (
-            <Modal style={{top: "22%"}} width={"550px"} bodyStyle={{minHeight:"120px"}} title="Logged into kevin.hk.or2010@gmail.com" visible={props.modal} 
+            <Modal style={{top: "22%"}} width={"550px"} bodyStyle={{minHeight:"120px"}} title={"Logged into " + localStorage.getItem("email")} visible={props.modal} 
                     onOk={() => {exit()}} onCancel={() => {exit()}}
                     footer={footer}>
                 <div style={{display:'flex', width:"100%", justifyContent:"center", marginBottom:"5px", marginTop:"-15px", flexWrap:"wrap"}}>

@@ -8,6 +8,7 @@ import { BFSCycle, BFSNoRepeat, BFSRepeat } from './logic/algorithms/BFS'
 import Components from './logic/algorithms/Components'
 import 'antd/dist/antd.css';
 import Routes from './routing/Routes'
+import { Helmet } from 'react-helmet'
 
 function App() {
   useEffect(() => {
@@ -15,6 +16,9 @@ function App() {
   })
   return (
     <React.Fragment>
+      <Helmet>
+          <title>Graph Theory Tool</title>
+        </Helmet>
       <Routes/>
     </React.Fragment>
   );
