@@ -128,7 +128,7 @@ export default function Data(props) {
 
     const tryAddVertex = (e) => {
         if(e.type == 'click') {
-            if(addingVertex && vertices.length <= 14) {
+            if(addingVertex && vertices.length <= 13) {
                 addVertex(e.clientX - 55, e.clientY - 13)
             }
             setAddingVertex(false);
@@ -340,7 +340,7 @@ export default function Data(props) {
         if(addingVertex) {
             return (
                 <Alert style={{position: 'absolute', right:"9%", bottom:"7.1%", width: "250px"}} 
-                    message="Click anywhere to add a vertex!" type="success" showIcon />
+                    message="Click anywhere to add a vertex! (Max 20 vertices)" type="success" showIcon />
             )
         }
     }
