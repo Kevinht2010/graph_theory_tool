@@ -335,30 +335,10 @@ export default function Data(props) {
             return <Error />
         }
     }
-
-    const getAddVertex = () => {
-        if(addingVertex) {
-            return (
-                <Alert style={{position: 'absolute', right:"9%", bottom:"7.1%", width: "250px"}} 
-                    message="Click anywhere to add a vertex! (Max 20 vertices)" type="success" showIcon />
-            )
-        }
-    }
-
-    const getDeleteVertex = () => {
-        if(deletingVertex) {
-            return (
-                <Alert style={{position: 'absolute', right:"9%", bottom:"7.1%", width: "250px"}} 
-                    message="Click a vertex to delete it!" type="error" showIcon />
-            )
-        }
-    }
         
     return (
         <React.Fragment>
             {getReturn()}
-            {getAddVertex()}
-            {getDeleteVertex()}
         </React.Fragment>
     )
 }

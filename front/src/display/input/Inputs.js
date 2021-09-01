@@ -240,6 +240,24 @@ export default function Inputs(props) {
         }
     }
 
+    const getAddVertex = () => {
+        if(props.addingVertex) {
+            return (
+                <Alert style={{position: 'absolute', right:"103%", bottom:"3.5%", width: "355px"}} 
+                    message="Click anywhere to add a vertex! (Max 20 vertices)" type="success" showIcon />
+            )
+        }
+    }
+
+    const getDeleteVertex = () => {
+        if(props.deletingVertex) {
+            return (
+                <Alert style={{position: 'absolute', right:"103%", bottom:"3.5%", width: "250px"}} 
+                    message="Click a vertex to delete it!" type="error" showIcon />
+            )
+        }
+    }
+
     return (
         <React.Fragment>
             <div style={{position:"absolute", display:"flex", marginTop:"45px", marginLeft:"85px"}} >
@@ -261,6 +279,8 @@ export default function Inputs(props) {
             {getEditEdge()}
             <div style={{position:"absolute", display:"flex", right:"3%", bottom:"6%", flexWrap:"wrap", width:"125px"}}>
                 {getCancel()}
+                {getDeleteVertex()}
+                {getAddVertex()}
                 <Button style={{margin:"10px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
                         onClick={() => {setDeleteEdge(true); setEditEdge(true);}}>
                     Delete Edge
