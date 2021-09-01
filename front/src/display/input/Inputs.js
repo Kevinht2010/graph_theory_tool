@@ -45,7 +45,7 @@ export default function Inputs(props) {
     const addEdges = () => {
         let inputGraph = new InputGraph(vertices, edges);
         if(inputGraph.valid === true) {
-            props.setGraph(inputGraph.edges, inputGraph.vertices, inputGraph.bendPositions);
+            props.setGraph(inputGraph.edges, inputGraph.vertices, inputGraph.bendPositions, true);
             clearInput();
         } else {
             setEdgesMessage(inputGraph.errors);
@@ -79,13 +79,13 @@ export default function Inputs(props) {
             if(vertices === 0) {
                 return (
                     <Form.Item
-                        label="Number of Vertices (Max 20)"
+                        label="Number of Vertices (Max 14)"
                         name="v1"
                         validateStatus={addEdgeValidStatus1}
                         help={vertexMessage === "error" ? "Invalid Input" : null}
                     >
                         <InputNumber onPressEnter={(e) => {setVertices(verticesInput)}} autoComplete="off" onChange={(value) => setVerticesInput(value)} 
-                                    min={1} max={20} defaultValue={1}/>
+                                    min={1} max={14} defaultValue={1}/>
                     </Form.Item>
                 )
             } else {

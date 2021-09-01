@@ -115,7 +115,7 @@ export default function Data(props) {
     const [deletingVertex, setDeletingVertex] = useState(false);
     const [bendPositions, setBendPositions] = useState(null);
 
-    const setGraph = (edges, vertices, bp) => {
+    const setGraph = (edges, vertices, bp, bl = false) => {
         setUpdating(true);
         setVertices(vertices);
         setEdges(edges);
@@ -128,7 +128,7 @@ export default function Data(props) {
 
     const tryAddVertex = (e) => {
         if(e.type == 'click') {
-            if(addingVertex && vertices.length <= 30) {
+            if(addingVertex && vertices.length <= 14) {
                 addVertex(e.clientX - 55, e.clientY - 13)
             }
             setAddingVertex(false);

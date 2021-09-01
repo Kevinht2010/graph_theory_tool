@@ -7,28 +7,28 @@ class Algorithms {
     maxCycle = 0;
     minCycle = Number.MAX_VALUE;
 
-    edges = [
-        [1,2,3,4],
-        [0,2,3,4],
-        [0,1,3,4],
-        [0,1,2,4],
-        [0,1,2,3],
-        [6,7,8,9],
-        [5,7,8,9],
-        [5,6,8,9],
-        [5,6,7,9],
-        [5,6,7,8],
-        [11,12],
-        [10,12],
-        [10,11],
-    ]
+    // edges = [
+    //     [1,2,3,4],
+    //     [0,2,3,4],
+    //     [0,1,3,4],
+    //     [0,1,2,4],
+    //     [0,1,2,3],
+    //     [6,7,8,9],
+    //     [5,7,8,9],
+    //     [5,6,8,9],
+    //     [5,6,7,9],
+    //     [5,6,7,8],
+    //     [11,12],
+    //     [10,12],
+    //     [10,11],
+    // ]
     
-    edges2 = [
-        [1,2,3],
-        [0,2,3],
-        [0,1,3],
-        [0,1,2]
-    ]
+    // edges2 = [
+    //     [1,2,3],
+    //     [0,2,3],
+    //     [0,1,3],
+    //     [0,1,2]
+    // ]
     
     BFS(G, vertex, visited) {
         let vertices = [vertex];
@@ -117,6 +117,15 @@ class Algorithms {
         }
         return adjMatrix;
     }
+
+    determinant = m => 
+        m.length == 1 ?
+        m[0][0] :
+        m.length == 2 ? 
+        m[0][0]*m[1][1]-m[0][1]*m[1][0] :
+        m[0].reduce((r,e,i) => 
+            r+(-1)**(i+2)*e*this.determinant(m.slice(1).map(c => 
+            c.filter((_,j) => i != j))),0)
     
     getSpanningTrees(G) {
         if(this.getComponents(G) != 1) {
@@ -139,6 +148,9 @@ class Algorithms {
             laplacian[i].pop();
         }
 
+        console.log(laplacian);
+        console.log(this.determinant(laplacian));
+
         return math.det(laplacian);
     }
     
@@ -154,7 +166,7 @@ class Algorithms {
     }
 
     getProperties(G) {
-        let spanningTrees = this.getSpanningTrees(G);
+        let spanningTrees = 0;
         let cycles = this.countCycles(G);
         let minCyc = this.minCycle;
         let maxCyc = this.maxCycle;
