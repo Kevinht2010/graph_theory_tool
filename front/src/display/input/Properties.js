@@ -147,8 +147,8 @@ class Algorithms {
         for(let i = 0; i < G.length-1; ++i) {
             laplacian[i].pop();
         }
-        
-        return math.det(laplacian);
+
+        return this.determinant(laplacian);
     }
     
     countCycles(G) {
