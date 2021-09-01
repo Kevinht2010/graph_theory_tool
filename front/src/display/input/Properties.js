@@ -147,10 +147,7 @@ class Algorithms {
         for(let i = 0; i < G.length-1; ++i) {
             laplacian[i].pop();
         }
-
-        console.log(laplacian);
-        console.log(this.determinant(laplacian));
-
+        
         return math.det(laplacian);
     }
     
@@ -166,7 +163,7 @@ class Algorithms {
     }
 
     getProperties(G) {
-        let spanningTrees = 0;
+        let spanningTrees = this.getSpanningTrees(G);
         let cycles = this.countCycles(G);
         let minCyc = this.minCycle;
         let maxCyc = this.maxCycle;
