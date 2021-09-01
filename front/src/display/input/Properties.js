@@ -184,12 +184,12 @@ class Algorithms {
             },
             {
                 key: '5',
-                property:'Longest Cycle',
+                property:'Shortest Cycle',
                 value: minCyc == Number.MAX_VALUE ? "Null" : minCyc
             },
             {
                 key: '6',
-                property:'Shortest Cycle',
+                property:'Longest Cycle',
                 value: maxCyc == 0 ? "Null" : maxCyc
             }
         ]

@@ -1,6 +1,5 @@
 export default class InputGraph {
     constructor(vertices, edges) {
-        console.log(edges);
         this.vertices = [];
         for(let i = 0; i < vertices; ++i) {
             this.vertices.push({"id": i, "posX": 500, "posY": 500});
@@ -43,11 +42,13 @@ export default class InputGraph {
         }
         
         let key;
-        if(v1 > v2) {
-            key = v2 + "." + v1;
-        } else {
-            key = v1 + "." + v2;
+        if(v2 > v1) {
+            let temp = v1;
+            v1 = v2;
+            v2 = temp;
         }
+
+        key = v1 + "." + v2;
         
         this.edges.set(key, {
             "id": key,

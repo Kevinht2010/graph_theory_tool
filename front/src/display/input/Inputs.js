@@ -204,7 +204,7 @@ export default function Inputs(props) {
                  <div style={{display:"flex", width:"100%", justifyContent:"center", marginTop:"10px", marginBottom:"-5px", marginLeft:"-10px"}}>
                     <Form
                         initialValues={{ remember: true }}
-                        onMouseDown={() => {setAddEdgeValidStatus1("none"); console.log("?")
+                        onMouseDown={() => {setAddEdgeValidStatus1("none");
                         setAddEdgeValidStatus2("none")}}
                         >
                         <Form.Item
@@ -229,15 +229,26 @@ export default function Inputs(props) {
         )
     }
 
+    const getCancel = () => {
+        if(props.addingVertex || props.deletingVertex) {
+            return (
+                <Button style={{margin:"10px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                        onClick={() => {props.setAddingVertex(false); props.setDeletingVertex(false);}}>
+                    Cancel
+                </Button>
+            )
+        }
+    }
+
     return (
         <React.Fragment>
-            <div style={{position:"absolute", display:"flex", marginTop:"20px", marginLeft:"20px"}} >
+            <div style={{position:"absolute", display:"flex", marginTop:"45px", marginLeft:"85px"}} >
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowInput(true)}>Input Graph</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => {props.straightenEdges()}}>Straighten Edges</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowProperties(true)}>Graph Properties</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => props.centerGraph()}>Center Graph</Button>
             </div>
-            <div style={{position:"absolute", marginLeft:"25px", bottom:"calc(6vh + 15px)"}}>
+            <div style={{position:"absolute", marginLeft:"100px", bottom:"calc(6vh + 15px)"}}>
                 <Button style={{width:"55px", height:"45px"}} type="primary" onClick={() => setProfileModal(true)}>
                     <UserOutlined/>
                 </Button>
@@ -249,20 +260,21 @@ export default function Inputs(props) {
             {getProperties()}
             {getEditEdge()}
             <div style={{position:"absolute", display:"flex", right:"3%", bottom:"6%", flexWrap:"wrap", width:"125px"}}>
-                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                {getCancel()}
+                <Button style={{margin:"10px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
                         onClick={() => {setDeleteEdge(true); setEditEdge(true);}}>
                     Delete Edge
                 </Button>
-                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
-                        onClick={() => {props.setDeletingVertex(true)}}>
+                <Button style={{margin:"10px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                        onClick={() => {props.setAddingVertex(false); props.setDeletingVertex(true)}}>
                     Delete Node
                 </Button>
-                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                <Button style={{margin:"10px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
                     onClick={() => {setAddEdge(true); setEditEdge(true)}}>
                     Add Edge
                 </Button>
-                <Button style={{margin:"8px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
-                    onClick={() => {props.setAddingVertex(true)}}>
+                <Button style={{margin:"10px", height:"45px", width:"95px", fontSize:"15px", padding:"0px"}} type="primary" 
+                    onClick={() => {props.setDeletingVertex(false); props.setAddingVertex(true)}}>
                     Add Node
                 </Button>
             </div>

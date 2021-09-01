@@ -55,7 +55,6 @@ function Profile(props) {
     }
 
     const saveGraph = () => {
-        console.log(props.bendPositions)
         if(props.loggedIn == true) {
             fetch('https://graphtt.herokuapp.com/api/upload', {
                 method: 'POST',

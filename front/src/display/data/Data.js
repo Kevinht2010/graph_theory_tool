@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import Inputs from '../../display/input/Inputs.js'
 import GraphVisual from '../graphs/GraphVisual.js'
 import Error from '../error/Error.js'
+import { Alert } from 'antd'
 
 export default function Data(props) {
     let tvertices = [{
@@ -126,10 +127,14 @@ export default function Data(props) {
     }
 
     const tryAddVertex = (e) => {
-        if(addingVertex && vertices.length <= 30) {
-            addVertex(e.clientX - 45, e.clientY - 10)
+        if(e.type == 'click') {
+            if(addingVertex && vertices.length <= 30) {
+                addVertex(e.clientX - 55, e.clientY - 13)
+            }
+            setAddingVertex(false);
+        } else {
+            setAddingVertex(false);
         }
-        setAddingVertex(false);
     }
 
     const addVertex = (x, y) => {
@@ -196,6 +201,12 @@ export default function Data(props) {
         let valid = ["none", "none"];
         v1 = Number(v1);
         v2 = Number(v2);
+        if(v1 > v2) {
+            let temp = v1;
+            v1 = v2;
+            v2 = temp;
+        }
+
         if(!(Number.isInteger(v1)) || v1 > vertices.length - 1) {
             valid[0] = ("error");
         }
@@ -271,11 +282,17 @@ export default function Data(props) {
 
     const centerGraph = () => {
         let newVertices = [];
+        let i = 0;
+        let k = vertices.length;
         vertices.forEach(vertex => {
-            console.log(vertex);
-            vertex.posX = 750;
-            vertex.posY = 420;
-
+            if(i > k / 2) {
+                vertex.posX = 500 + (i-k/2)*50;
+                vertex.posY = 320 + 200;
+            } else {
+                vertex.posX = 500 + i*50;
+                vertex.posY = 320;
+            }
+            ++i;
             newVertices.push(vertex);
         })
 
@@ -301,12 +318,14 @@ export default function Data(props) {
         if(window.innerWidth > "670") {
             return (
                 <div style={{overflow:"auto"}}>
-                    <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
-                        onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
-                        <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
+                    <Inputs setAddingVertex={setAddingVertex} straightenEdges={straightenEdges} addEdge={addEdge} setDeletingVertex={setDeletingVertex} deleteEdge={deleteEdgeTest}
                                 setGraph={setGraph} edges={edges} vertices={vertices} bendPositions={bendPositions}
                                 logIn={props.login} logOut={props.logout} loggedIn={props.loggedIn} centerGraph={centerGraph}
+                                addingVertex={addingVertex} deletingVertex={deletingVertex}
                         />
+                    <div style={{display:"flex", height: '92vh', width:'94vw', marginLeft:"3vw", marginRight:"3vw", marginTop:"3vh", marginBottom:"2.75vh", overflow:"hidden"}} 
+                        onClick={(e) => {tryAddVertex(e); setAddingVertex(false)}}>
+                        
                         {updating ? <React.Fragment/> : <GraphVisual vertices={vertices} edges={edges} bendPositions={bendPositions} setVertices={setVertices} deletingVertex={deletingVertex}
                                     setBendPositions={setBendPositions} onMouseDown={(e) => {tryAddVertex(e); setAddingVertex(false)}} deleteVertex={deleteVertex}/> }
                     </div>
@@ -316,10 +335,30 @@ export default function Data(props) {
             return <Error />
         }
     }
+
+    const getAddVertex = () => {
+        if(addingVertex) {
+            return (
+                <Alert style={{position: 'absolute', right:"9%", bottom:"7.1%", width: "250px"}} 
+                    message="Click anywhere to add a vertex!" type="success" showIcon />
+            )
+        }
+    }
+
+    const getDeleteVertex = () => {
+        if(deletingVertex) {
+            return (
+                <Alert style={{position: 'absolute', right:"9%", bottom:"7.1%", width: "250px"}} 
+                    message="Click a vertex to delete it!" type="error" showIcon />
+            )
+        }
+    }
         
     return (
         <React.Fragment>
             {getReturn()}
+            {getAddVertex()}
+            {getDeleteVertex()}
         </React.Fragment>
     )
 }

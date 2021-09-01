@@ -14,7 +14,7 @@ export default function GraphVisual(props) {
 
     const dragStart = (e, id, node) => {
         if(mouseIn === true) {
-            if(props.deletingVertex) {
+            if(props.deletingVertex && e.type == 'mousedown') {
                 props.deleteVertex(id);
                 return;
             }

@@ -7,12 +7,15 @@ function Edge(props) {
 
     let c;
     let d;
-    if(props.bendPos.bent === false) {
-        c = [(node1.posX + node2.posX)/2, (node1.posY + node2.posY)/2];
-        d = "M " + node1.posX + " " + node1.posY + " Q " + c[0] + " " + c[1] + " " + node2.posX + " " + node2.posY;
-    } else {
-        c = [props.bendPos.posX, props.bendPos.posY];
-        d = calcCirclePath([[node2.posX, node2.posY], c, [node1.posX, node1.posY]]);
+    
+    if(props.bendPos && node1 && node2) {
+        if(props.bendPos.bent === false) {
+            c = [(node1.posX + node2.posX)/2, (node1.posY + node2.posY)/2];
+            d = "M " + node1.posX + " " + node1.posY + " Q " + c[0] + " " + c[1] + " " + node2.posX + " " + node2.posY;
+        } else {
+            c = [props.bendPos.posX, props.bendPos.posY];
+            d = calcCirclePath([[node2.posX, node2.posY], c, [node1.posX, node1.posY]]);
+        }
     }
 
     useEffect(() => {
@@ -20,15 +23,25 @@ function Edge(props) {
         setBendPos(props.bendPos);
     }, [props.node1, props.node2, props.bendPos])
 
+    const render = () => {
+        if(c && d) {
+            return (
+                <svg>
+                    <svg>
+                        <circle onMouseDown={(e) => {props.dragStart(e, props.id, false);}} onMouseUp={(e) => props.dragEnd(e)} cx={c[0]} cy={c[1]} r={6}/>
+                    </svg>
+                    <svg>
+                        <path pointer-events="none" d={d} stroke="black" fill="transparent" stroke-width="3" shape-rendering="geometricPrecision"/>
+                    </svg>
+                </svg>
+            )
+        }
+    }
+
     return (
-        <svg>
-            <svg>
-                <circle onMouseDown={(e) => {props.dragStart(e, props.id, false);}} onMouseUp={(e) => props.dragEnd(e)} cx={c[0]} cy={c[1]} r={6}/>
-            </svg>
-            <svg>
-                <path pointer-events="none" d={d} stroke="black" fill="transparent" stroke-width="3" shape-rendering="geometricPrecision"/>
-            </svg>
-        </svg>
+        <React.Fragment>
+            {render()}
+        </React.Fragment>
     )
 }
 
@@ -64,3 +77,21 @@ function calcCirclePath(points){
   }
 
 export default Edge
+
+// if(props.bendPos.bent === false) {
+//     c = [(props.node1.posX + props.node2.posX)/2, (props.node1.posY + props.node2.posY)/2];
+//     d = "M " + props.node1.posX + " " + props.node1.posY + " Q " + c[0] + " " + c[1] + " " + props.node2.posX + " " + props.node2.posY;
+// } else {
+//     c = [props.bendPos.posX, props.bendPos.posY];
+//     d = calcCirclePath([[props.node2.posX, props.node2.posY], c, [props.node1.posX, props.node1.posY]]);
+// }
+
+// useEffect(() => {
+//     if(props.bendPos.bent === false) {
+//         c = [(props.node1.posX + props.node2.posX)/2, (props.node1.posY + props.node2.posY)/2];
+//         d = "M " + props.node1.posX + " " + props.node1.posY + " Q " + c[0] + " " + c[1] + " " + props.node2.posX + " " + props.node2.posY;
+//     } else {
+//         c = [props.bendPos.posX, props.bendPos.posY];
+//         d = calcCirclePath([[props.node2.posX, props.node2.posY], c, [props.node1.posX, props.node1.posY]]);
+//     }
+// }, [props.node1, props.node2, props.bendPos])
