@@ -24,7 +24,7 @@ function Profile(props) {
                 method: 'POST',
                 body: JSON.stringify({
                     'email': email, // change here
-                    'route': "https://kevinht2010.github.io/graphtool/#/"
+                    'route': "https://graph-tool.netlify.app/#/"
                 }),
                 headers: {
                     "Content-type": "application/json"
@@ -167,10 +167,10 @@ function Profile(props) {
     const getLogin = () => {
         let footer = (
             <React.Fragment>
-                <Button key="back" onClick={() => {exit()}} style={{marginTop:"10px", marginBottom:"10px", marginRight:"46%"}}>
+                <Button key="back" onClick={() => {exit()}} style={{marginTop:"10px", marginBottom:"10px", marginRight:"47.5%"}}>
                     Return
                 </Button>
-                <Button type="primary" key="back" onClick={() => {authenticate(email)}}>
+                <Button type="primary" key="back" onClick={() => {authenticate(email)}} style={{positon:"absolute", right: "10px"}}>
                     Send Confirmation Email
                 </Button>
             </React.Fragment>
