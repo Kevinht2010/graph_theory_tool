@@ -260,13 +260,13 @@ export default function Inputs(props) {
 
     return (
         <React.Fragment>
-            <div style={{position:"absolute", display:"flex", marginTop:"45px", marginLeft:"85px"}} >
+            <div style={{position:"absolute", display:"flex", marginTop:"45px", left:"calc(15px + 3.5%)"}} >
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowInput(true)}>Input Graph</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => {props.straightenEdges()}}>Straighten Edges</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => setShowProperties(true)}>Graph Properties</Button>
                 <Button style={{margin: "8px", height:"35px", width:"150px", fontSize:"15px"}} type="primary" onClick={() => props.centerGraph()}>Center Graph</Button>
             </div>
-            <div style={{position:"absolute", marginLeft:"100px", bottom:"calc(6vh + 15px)"}}>
+            <div style={{position:"absolute", left:"calc(15px + 3.75%)", bottom:"calc(6vh + 15px)"}}>
                 <Button style={{width:"55px", height:"45px"}} type="primary" onClick={() => setProfileModal(true)}>
                     <UserOutlined/>
                 </Button>

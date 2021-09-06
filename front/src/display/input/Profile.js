@@ -46,7 +46,7 @@ function Profile(props) {
                 headers: {
                     "Content-type": "application/json"
                 }
-            }).then(response => response.json()).then(msg => {console.log(msg); setGraphRetrieved(true)
+            }).then(response => response.json()).then(msg => {setGraphRetrieved(true)
                 let e = new Map(JSON.parse(msg.edges));
                 let bp = new Map(JSON.parse(msg.bentpos));
                 props.setGraph(e, JSON.parse(msg.vertices), bp);
