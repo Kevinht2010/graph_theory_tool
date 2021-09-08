@@ -263,14 +263,14 @@ export default function Data(props) {
             valid[0] = "error";
             valid[1] = "error";
         }
-
+        
         if(valid[0] === "error" || valid[1] === "error") return valid;
         let key;
 
         if(v1 > v2) {
-            key = v2 + "." + v1;
-        } else {
             key = v1 + "." + v2;
+        } else {
+            key = v2 + "." + v1;
         }
         if(!edges.has(key)) {
             return ["error", "error"]
